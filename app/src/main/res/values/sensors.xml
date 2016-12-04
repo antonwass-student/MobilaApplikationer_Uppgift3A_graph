@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_sensor">Sensor</string>
+    <string name="default_sensor">acc</string>
+
+    <array name="sensor_list">
+        <item>Accelerometer</item>
+        <item>Gyro</item>
+        <item>Magnetometer</item>
+    </array>
+
+    <array name="sensor_list_values">
+        <item>acc</item>
+        <item>gyro</item>
+        <item>mag</item>
+    </array>
+</resources>

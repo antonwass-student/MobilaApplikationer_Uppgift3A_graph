@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:key="pref_sensor"
+        android:title="Choose sensor"
+        android:dialogTitle="Choose sensor"
+        android:entries="@array/sensor_list"
+        android:entryValues="@array/sensor_list_values"
+        android:defaultValue="@string/default_sensor"
+        />
+</PreferenceScreen>
