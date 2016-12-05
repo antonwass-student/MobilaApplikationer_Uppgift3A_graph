@@ -1,24 +1,20 @@
 package com.anton.mobilaapplikationer_uppgift3a_graph;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.audiofx.BassBoost;
+import android.hardware.Sensor;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
 
 public class MainActivity extends AppCompatActivity {
 
     private GraphView graph;
+    private SharedPreferences sharedPref;
+    private SensorInterpreter sensors;
+    private RealTimeGraph rtg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,18 +27,22 @@ public class MainActivity extends AppCompatActivity {
 
         graph = (GraphView)findViewById(R.id.graph);
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String sensorPref = sharedPref.getString("pref_sensor",null);
 
-        Log.d("", sensorPref);
+        rtg = new RealTimeGraph(graph);
+        sensors = new SensorInterpreter(this, rtg, Sensor.TYPE_ACCELEROMETER);
 
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[]{
-                new DataPoint(1.5, -4),
-                new DataPoint(3, 2),
-                new DataPoint(4, -2)
-        });
+        sensors.changeSensor(sensorPref);
 
-        graph.addSeries(series);
+        sharedPref.registerOnSharedPreferenceChangeListener(spChanged);
     }
+
+    SharedPreferences.OnSharedPreferenceChangeListener spChanged = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            sensors.changeSensor(sharedPref.getString(key,null));
+        }
+    };
 
 }
